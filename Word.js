@@ -1,6 +1,12 @@
 // * **Word.js**: Contains a constructor, Word that depends on the Letter constructor. This is used to create an
 // object representing the current word the user is attempting to guess. That means the constructor should define:
 
+var Lettermod = require("./Letter.js");
+
+var Letter = Lettermod.Letterfunc;
+
+// console.log(Letter);
+
 function Word(inputWord) {
     this.arrRaw = inputWord.split("");
     this.arr = [];
@@ -20,17 +26,22 @@ function Word(inputWord) {
         return wordList;
     };
     this.guessWord = function(char) {
+        var correctGuess = false;
         for (var i = 0; i < this.arr.length; i++) {
-            this.arr[i].check(char);
+            var temp = this.arr[i].check(char);
+            if (temp === true) {
+                correctGuess = true;
+            }
         }
+        // console.log(correctGuess);
+        return correctGuess;
     };
 }
 
-var newWord = new Word("potato");
-// newWord.arrUpdate();
+var temp = new Word("potato");
+console.log(temp);
+console.log(temp.guessWord("x"));
 
-console.log(newWord);
-console.log(newWord.displayWord());
-newWord.guessWord("o");
-
-console.log(newWord);
+module.exports = {
+    Wordfunc: Word
+};

@@ -23,17 +23,15 @@ function Letter(char) {
         }
     };
     this.check = function(guesschar) {
+        var checker = false;
         if (guesschar === this.str) {
             this.guessed = true;
+            checker = true;
         }
+        return checker;
     };
 }
 
-var g1 = new Letter("a");
-console.log(g1);
-console.log(g1.display());
-g1.check("l");
-console.log(g1);
-g1.check("a");
-console.log(g1);
-console.log(g1.display());
+module.exports = {
+    Letterfunc: Letter
+};
