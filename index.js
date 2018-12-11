@@ -8,7 +8,44 @@ var Wordmod = require("./Word.js");
 var inquirer = require("inquirer");
 
 var Word = Wordmod.Wordfunc;
-guessesLeft = 10;
+
+var guessedLetters;
+
+var guessesLeft;
+var newWord;
+
+// https://www.asciiart.eu/clothing-and-accessories/footwear
+var bootart = `
+    ._......     
+    |X/.*| |     
+    |X/+ | |     
+    |X/* | |     
+____/     ; ;       
+\\_____/|_/_/
+`;
+
+var hatart = `
+     .~~~~ \\~~\\
+     ;       ~~ \\
+     |           ;
+ ,--------,______|---.
+/          \\-----'    \\  
+\\.__________\\-_______-'
+`;
+// note: there is velcro on the inside of this hat.
+
+var skullart = `
+  _____
+ /#####\\
+| () () |
+ \\  ^  /
+  |||||
+  |||||
+`;
+
+// http://www.asciiworld.com/-Death-Co-.html
+
+console.log(bootart);
 
 var wordOptions = [
     "awkward",
@@ -23,23 +60,51 @@ var wordOptions = [
     "jukebox"
 ];
 
-// randomly select a word (in this case it won't be random, but)
+function randomNum(max, min) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
-// assign to the word constructor
-var newWord = new Word(wordOptions[1]);
+function initializeGame() {
+    var i = randomNum(wordOptions.length - 1, 0);
+    newWord = new Word(wordOptions[i]);
 
-// tell the player it's game time!
-console.log(`\n\n
+    guessesLeft = 1;
+    guessedLetters = [];
+
+    printStart();
+
+    console.log("Your word is: ");
+    // display the word
+    console.log(newWord.displayWord());
+    console.log(`\n`);
+
+    playGame();
+}
+
+function printStart() {
+    console.log(`\n\n
 ##########################
 WELCOME TO HANGMAN
 ##########################
-\nYour first word:\n`);
+\n`);
 
-// display the word
-console.log(newWord.displayWord());
-console.log(`\n`);
+    console.log(bootart);
 
-var guessedLetters = [];
+    console.log(
+        "Saddle up, partner! Are your spurs sharp enough to solve my puzzles?"
+    );
+}
+
+// https://www.asciiart.eu/clothing-and-accessories/hats
+// mild editing to take backticks
+
+function printWin() {
+    console.log(hatart);
+}
+
+function printLose() {
+    console.log(skullart);
+}
 
 // prompt the user for a guess:
 function playGame() {
@@ -54,9 +119,8 @@ function playGame() {
                     if (
                         value.length === 1 &&
                         value.match(/[A-Za-z]/i) &&
-                        guessedLetters.indexOf(value) < 0
+                        guessedLetters.indexOf(value.toLowerCase()) < 0
                     ) {
-                        console.log(value);
                         return true;
                     } else {
                         return "Please enter a single character that hasn't already been guessed!";
@@ -65,11 +129,11 @@ function playGame() {
             }
         ])
         .then(function(answers) {
-            console.log(answers);
             var answer = answers.letterGuess.toLowerCase();
             guessedLetters.push(answer);
             var correctorno = newWord.guessWord(answer);
-            console.log(correctorno);
+
+            console.log(`You guessed ${answer}!`);
 
             if (correctorno) {
                 console.log("Good job!");
@@ -79,40 +143,28 @@ function playGame() {
             }
 
             if (checkWin()) {
-                console.log("You won!");
+                console.log(newWord.displayWord());
+                printWin();
+
+                console.log(
+                    "Well alright, there -- I suppose you've beaten my boots!"
+                );
+                playAgain();
             } else if (guessesLeft > 0) {
                 console.log(`${guessesLeft} guesses remaining!`);
                 console.log(newWord.displayWord());
                 console.log(`You have guessed: "${guessedLetters}"`);
                 playGame();
             } else {
-                console.log(newWord);
-                console.log("Game over!");
+                console.log(
+                    "Shucks, partner! I thought you were supposed to be a problem solver!"
+                );
+                printLose();
+                playAgain();
             }
-            // console.log(newWord);
         });
 }
 
-playGame();
-
-// using that guess, check against the word
-
-// if right, hurrah! the number of guesses stays the same
-
-// if wrong, decrease the number of guesses remaining
-
-// if guesses = 0, end the game. offer for new game or quit
-
-// check for win condition each time
-
-// var newWord = new Word("pizza");
-// // newWord.arrUpdate();
-
-// console.log(newWord);
-// console.log(newWord.displayWord());
-// newWord.guessWord("o");
-
-// console.log(newWord);
 function checkWin() {
     var isDone = true;
     for (var i = 0; i < newWord.arr.length; i++) {
@@ -122,3 +174,28 @@ function checkWin() {
     }
     return isDone;
 }
+
+function playAgain() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                // Taken from the pizza example from inquirer
+                name: "playagain",
+                message: "Play again? y/n"
+            }
+        ])
+        .then(function(answers) {
+            // console.log(answers);
+            if (answers.playagain.toLowerCase() === "y") {
+                initializeGame();
+            } else if (answers.playagain.toLowerCase() === "n") {
+                console.log("See ya!");
+            } else {
+                console.log("Yes or No, partner? (y/n)");
+                playAgain();
+            }
+        });
+}
+
+initializeGame();

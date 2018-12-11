@@ -5,8 +5,6 @@ var Lettermod = require("./Letter.js");
 
 var Letter = Lettermod.Letterfunc;
 
-// console.log(Letter);
-
 function Word(inputWord) {
     this.arrRaw = inputWord.split("");
     this.arr = [];
@@ -17,7 +15,6 @@ function Word(inputWord) {
     this.displayWord = function() {
         var wordList = "";
         for (var i = 0; i < this.arr.length; i++) {
-            // console.log(this.arr[i].display());
             if (i > 0) {
                 wordList += " ";
             }
@@ -33,14 +30,9 @@ function Word(inputWord) {
                 correctGuess = true;
             }
         }
-        // console.log(correctGuess);
         return correctGuess;
     };
 }
-
-var temp = new Word("potato");
-console.log(temp);
-console.log(temp.guessWord("x"));
 
 module.exports = {
     Wordfunc: Word
