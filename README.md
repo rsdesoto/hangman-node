@@ -10,13 +10,13 @@ ASCII Art:
 
 (Minor edits by me to remove backticks so these would actually print properly)
 
-Word List:
-http://www.lrgaf.org/guide/western-cowboy.htm
-http://www.cowboyshowcase.com/the-people--the-land.html#.XBE-_ydRf_Q
-https://www.legendsofamerica.com/we-slang/
+Word List was culled from the following pages:
+[The Long Riders Guild Academic Foundation](http://www.lrgaf.org/guide/western-cowboy.htm)
+[Cowboy Showcase](http://www.cowboyshowcase.com/the-people--the-land.html#.XBE-_ydRf_Q)
+[Legends of America](https://www.legendsofamerica.com/we-slang/)
 
-function playAgain and playGame - some code taken from the inquirer example for pizza (link)
+The code in Inquirer that uses regex to validate the user input was taken from some of the inquirer examples -- specifically [pizza.js](https://github.com/SBoudrias/Inquirer.js/blob/master/packages/inquirer/examples/pizza.js).
 
 #### further notes:
 
-There is velcro inside the hat to match the velcro on the skull.
+There is velcro inside the hat to match the velcro on the skull. You may not be able to see it, but I assure you: it's there.
