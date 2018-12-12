@@ -1,118 +1,187 @@
-// * **index.js**: The file containing the logic for the course of the game, which depends on `Word.js` and:
+//////////////////////////////////////////////////////////////////////////////////////////////////
+/////////// REQUIRED PACKAGES AND MODULES ////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
-// * Randomly selects a word and uses the `Word` constructor to store it
-
-// * Prompts the user for each guess and keeps track of the user's remaining guesses
-
-var Wordmod = require("./Word.js");
+var wordMod = require("./Word.js");
+var artMod = require("./images.js");
 var inquirer = require("inquirer");
+var Word = wordMod.Wordfunc;
+var printArt = artMod.printArtFunc;
 
-var Word = Wordmod.Wordfunc;
+//////////////////////////////////////////////////////////////////////////////////////////////////
+/////////// INITIALIZE VARIABLES /////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 var guessedLetters;
-
 var guessesLeft;
 var newWord;
 
-// https://www.asciiart.eu/clothing-and-accessories/footwear
-var bootart = `
-    ._......     
-    |X/.*| |     
-    |X/+ | |     
-    |X/* | |     
-____/     ; ;       
-\\_____/|_/_/
-`;
-
-var hatart = `
-     .~~~~ \\~~\\
-     ;       ~~ \\
-     |           ;
- ,--------,______|---.
-/          \\-----'    \\  
-\\.__________\\-_______-'
-`;
-// note: there is velcro on the inside of this hat.
-
-var skullart = `
-  _____
- /#####\\
-| () () |
- \\  ^  /
-  |||||
-  |||||
-`;
-
-// http://www.asciiworld.com/-Death-Co-.html
-
-console.log(bootart);
-
 var wordOptions = [
-    "awkward",
-    "bagpipes",
-    "banjo",
-    "bungler",
-    "croquet",
-    "crypt",
-    "fervid",
-    "gazebo",
-    "haphazard",
-    "jukebox"
+    "buckaroo",
+    "cowpuncher",
+    "rustler",
+    "above snakes",
+    "make tracks",
+    "spurs",
+    "vaquero",
+    "greenhorn",
+    "jingle bobs",
+    "running iron",
+    "stampede string"
 ];
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+/////////// HELPER FUNCTIONS /////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Returns a random number between max and min numbers
+ * @param {int} max
+ * @param {int} min
+ */
 function randomNum(max, min) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function initializeGame() {
-    var i = randomNum(wordOptions.length - 1, 0);
-    newWord = new Word(wordOptions[i]);
-
-    guessesLeft = 1;
-    guessedLetters = [];
-
-    printStart();
-
-    console.log("Your word is: ");
-    // display the word
-    console.log(newWord.displayWord());
-    console.log(`\n`);
-
-    playGame();
-}
-
+/**
+ * Print the welcome screen to the game
+ */
 function printStart() {
     console.log(`\n\n
-##########################
+##################
 WELCOME TO HANGMAN
-##########################
+##################
 \n`);
-
-    console.log(bootart);
+    printArt(artMod.bootart);
 
     console.log(
         "Saddle up, partner! Are your spurs sharp enough to solve my puzzles?"
     );
 }
 
-// https://www.asciiart.eu/clothing-and-accessories/hats
-// mild editing to take backticks
-
+/**
+ * Print win condition!
+ */
 function printWin() {
-    console.log(hatart);
+    console.log(newWord.displayWord());
+    printArt(artMod.hatart);
+    console.log("Well alright, there -- I suppose you've beaten my boots!");
 }
 
+/**
+ * Print lose condition :c
+ */
 function printLose() {
-    console.log(skullart);
+    console.log(`The answer was:
+${newWord.arrRawDisp()}`);
+    printArt(artMod.skullart);
+    console.log(
+        "Shucks, greenhorn! I thought you were supposed to be a problem solver!"
+    );
 }
 
-// prompt the user for a guess:
+/**
+ * Sets the word that will be guessed, sets the number of guesses, clears out the letters guessed array, and then
+ * prep to run playGame()
+ */
+function initializeGame() {
+    var i = randomNum(wordOptions.length - 1, 0);
+    newWord = new Word(wordOptions[i]);
+
+    guessesLeft = 10;
+    guessedLetters = [];
+
+    printStart();
+
+    console.log("Your word is: ");
+
+    console.log(newWord.displayWord());
+    console.log(`\n`);
+
+    playGame();
+}
+
+/**
+ * Pass the guessed letter into the function guessWord(); if the answer is true, tell the player they've
+ * guessed correctly. Otherwise, tell them they guessed wrong and decreate the number of guesses
+ * @param {str} answer
+ */
+function checkLetter(answer) {
+    console.log(`You guessed ${answer}! \n`);
+
+    var correctorno = newWord.guessWord(answer);
+
+    if (correctorno) {
+        console.log("################\nCorrect! Yeehaw!\n################\n");
+    } else {
+        console.log(
+            "##################\nIncorrect! Shucks!\n##################\n"
+        );
+        guessesLeft--;
+    }
+}
+
+/**
+ * Go through all letters of the word.
+ * If all letters have been guessed (guessed = true for all), the game has been won.
+ * If any letters have not been guessed (guessed = false), the word has not been guessed.
+ * If guesses left are 0, the game is over and the user lost. Otherwise, keep playing.
+ */
+function checkWin() {
+    var isDone = true;
+    for (var i = 0; i < newWord.arr.length; i++) {
+        if (!newWord.arr[i].guessed) {
+            isDone = false;
+        }
+    }
+
+    if (isDone) {
+        printWin();
+        playAgain();
+    } else if (guessesLeft > 0) {
+        console.log(`${guessesLeft} guesses remaining!`);
+        console.log(newWord.displayWord());
+        console.log(`You have guessed: "${guessedLetters}"\n`);
+        playGame();
+    } else {
+        printLose();
+        playAgain();
+    }
+}
+
+/**
+ * Prompt the user to either play again or quit. Include something to check to make sure the player entered either Y or
+ * N and do not let them continue until they have.
+ */
+function playAgain() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "playagain",
+                message: "Play again? y/n"
+            }
+        ])
+        .then(function(answers) {
+            if (answers.playagain.toLowerCase() === "y") {
+                initializeGame();
+            } else if (answers.playagain.toLowerCase() === "n") {
+                console.log("See ya!");
+            } else {
+                console.log("Yes or No, partner? (y/n)");
+                playAgain();
+            }
+        });
+}
+
+/**
+ * Creates an inquirer prompt to get the player to guess a letter.
+ */
 function playGame() {
     inquirer
         .prompt([
             {
                 type: "input",
-                // Taken from the pizza example from inquirer
                 name: "letterGuess",
                 message: "Guess a letter",
                 validate: function(value) {
@@ -131,70 +200,8 @@ function playGame() {
         .then(function(answers) {
             var answer = answers.letterGuess.toLowerCase();
             guessedLetters.push(answer);
-            var correctorno = newWord.guessWord(answer);
-
-            console.log(`You guessed ${answer}!`);
-
-            if (correctorno) {
-                console.log("Good job!");
-            } else {
-                console.log("Too bad!");
-                guessesLeft--;
-            }
-
-            if (checkWin()) {
-                console.log(newWord.displayWord());
-                printWin();
-
-                console.log(
-                    "Well alright, there -- I suppose you've beaten my boots!"
-                );
-                playAgain();
-            } else if (guessesLeft > 0) {
-                console.log(`${guessesLeft} guesses remaining!`);
-                console.log(newWord.displayWord());
-                console.log(`You have guessed: "${guessedLetters}"`);
-                playGame();
-            } else {
-                console.log(
-                    "Shucks, partner! I thought you were supposed to be a problem solver!"
-                );
-                printLose();
-                playAgain();
-            }
-        });
-}
-
-function checkWin() {
-    var isDone = true;
-    for (var i = 0; i < newWord.arr.length; i++) {
-        if (!newWord.arr[i].guessed) {
-            isDone = false;
-        }
-    }
-    return isDone;
-}
-
-function playAgain() {
-    inquirer
-        .prompt([
-            {
-                type: "input",
-                // Taken from the pizza example from inquirer
-                name: "playagain",
-                message: "Play again? y/n"
-            }
-        ])
-        .then(function(answers) {
-            // console.log(answers);
-            if (answers.playagain.toLowerCase() === "y") {
-                initializeGame();
-            } else if (answers.playagain.toLowerCase() === "n") {
-                console.log("See ya!");
-            } else {
-                console.log("Yes or No, partner? (y/n)");
-                playAgain();
-            }
+            checkLetter(answer);
+            checkWin();
         });
 }
 
