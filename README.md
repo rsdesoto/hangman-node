@@ -53,7 +53,7 @@ The code in Inquirer that uses regex to validate the user input was taken from s
 
 ## Contact Me:
 
-If you have any questions, run into any bugs, or find a really good ascii cow skull (I found cows, and skulls, but now cow skulls), hit me up at ry.e.desoto@gmail.com.
+If you have any questions, run into any bugs, or find a really good ascii cow skull (I found cows, and skulls, but no cow skulls), hit me up at ry.e.desoto@gmail.com.
 
 #### further notes:
 
