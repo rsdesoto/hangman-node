@@ -10,21 +10,29 @@ Please note: this game requires [Node.js](https://nodejs.org/en/) in order to be
 
 Download the game and all game files. Navigate to the file location using the terminal, or open the files with a code editor with a built-in terminal.
 
+![Navigate to Folder](https://raw.githubusercontent.com/rsdesoto/hangman-node/master/images/location.png)
+
 Install all necessary packages using the command "npm i".
+
+![NPM installation](https://raw.githubusercontent.com/rsdesoto/hangman-node/master/images/install_packages.png)
 
 ##### Playing the Game
 
 Bring up the game by typing the command "node index.js". The welcome screen will appear.
 
+![Game Starting Screen](https://raw.githubusercontent.com/rsdesoto/hangman-node/master/images/intro_screen.png)
+
 Guess letters by typing a single letter at a time (not case sensitive). Try to guess the word before you run out of guesses!
+
+![Gameplay Example](https://raw.githubusercontent.com/rsdesoto/hangman-node/master/images/gameplay.png)
 
 ##### Replay or Exit
 
 Once the game has been finished, the game will provide a prompt to replay, or to quit.
 
-Good luck!
+![Lose Screen](https://raw.githubusercontent.com/rsdesoto/hangman-node/master/images/endgame.png)
 
-##### Playing the Game
+**Good luck!**
 
 ## Credits:
 
@@ -36,7 +44,7 @@ ASCII Art:
 
 (Minor edits by me to remove backticks so these would actually print properly, and to add velcro to the skull.)
 
-Word List was culled from the following pages:
+The word list was culled from the following pages:
 [The Long Riders Guild Academic Foundation](http://www.lrgaf.org/guide/western-cowboy.htm)
 [Cowboy Showcase](http://www.cowboyshowcase.com/the-people--the-land.html#.XBE-_ydRf_Q)
 [Legends of America](https://www.legendsofamerica.com/we-slang/)
