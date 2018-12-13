@@ -1,5 +1,31 @@
 # hangman-node
 
+Saddle up, partner! Test your (console) cowboy knowledge with a hangman game!
+
+## Instructions:
+
+##### Installing the Game
+
+Please note: this game requires [Node.js](https://nodejs.org/en/) in order to be played. Make sure Node exists on your computer!
+
+Download the game and all game files. Navigate to the file location using the terminal, or open the files with a code editor with a built-in terminal.
+
+Install all necessary packages using the command "npm i".
+
+##### Playing the Game
+
+Bring up the game by typing the command "node index.js". The welcome screen will appear.
+
+Guess letters by typing a single letter at a time (not case sensitive). Try to guess the word before you run out of guesses!
+
+##### Replay or Exit
+
+Once the game has been finished, the game will provide a prompt to replay, or to quit.
+
+Good luck!
+
+##### Playing the Game
+
 ## Credits:
 
 ASCII Art:
@@ -8,7 +34,7 @@ ASCII Art:
 -   [Hat by Tom Youderian](https://www.asciiart.eu/clothing-and-accessories/hats)
 -   [Boots by Riitta Rasimus](https://www.asciiart.eu/clothing-and-accessories/footwear)
 
-(Minor edits by me to remove backticks so these would actually print properly)
+(Minor edits by me to remove backticks so these would actually print properly, and to add velcro to the skull.)
 
 Word List was culled from the following pages:
 [The Long Riders Guild Academic Foundation](http://www.lrgaf.org/guide/western-cowboy.htm)
@@ -16,6 +42,10 @@ Word List was culled from the following pages:
 [Legends of America](https://www.legendsofamerica.com/we-slang/)
 
 The code in Inquirer that uses regex to validate the user input was taken from some of the inquirer examples -- specifically [pizza.js](https://github.com/SBoudrias/Inquirer.js/blob/master/packages/inquirer/examples/pizza.js).
+
+## Contact Me:
+
+If you have any questions or run into any bugs, hit me up at ry.e.desoto@gmail.com.
 
 #### further notes:
 
